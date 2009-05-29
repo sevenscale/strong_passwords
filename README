@@ -1,0 +1,20 @@
+StrongPasswords
+===============
+
+Simple validation for strong passwords in your models.
+
+
+Example
+=======
+
+class User < ActiveRecord::Base
+  validates_strength_of :password
+end
+
+Author
+======
+
+Michael D. Ivey <ivey@gweezlebur.com>
+
+
+Copyright (c) 2009 SevenScale, released under the MIT License.
