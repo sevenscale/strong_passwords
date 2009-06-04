@@ -2,6 +2,7 @@ StrongPasswords
 ===============
 
 Simple validation for strong passwords in your models.
+More: http://en.wikipedia.org/wiki/Password_strength
 
 
 Example
@@ -16,5 +17,7 @@ Author
 
 Michael D. Ivey <ivey@gweezlebur.com>
 
+Sponsored by and developed with Seven Scale <http://sevenscale.com/>, 
+creators of Cloudvox and Open Syslog.
 
-Copyright (c) 2009 SevenScale, released under the MIT License.
+Copyright (c) 2009 Seven Scale LLC.  Released under the MIT License.
