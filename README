@@ -4,20 +4,47 @@ StrongPasswords
 Simple validation for strong passwords in your models.
 More: http://en.wikipedia.org/wiki/Password_strength
 
+Strength is based on a score of the password based on how many good
+characteristics it contains.
+
+The characteristics it currently gives you a point for is:
+
+ * Each symbol
+ * A string of numbers
+ * A string of letters
+ * A transition from lower-to-upper-case or upper-to-lower-case
+ * A string of 10 characters (as a bonus for long passwords)
+
+
+Remember to add your own length limitations if you don't want "1aB" to be
+allowed.
+
 
 Example
 =======
 
 class User < ActiveRecord::Base
-  validates_strength_of :password
+  validates_strength_of :password, :score => 3 # Default minimum score is 3
+  validates_length_of   :password, :minimum => 7
 end
 
-Author
+History
+=======
+
+2.0 / 2009-08-11
+  * Rework to be based on a score instead of requiring all possible
+    characteristics
+
+1.0 / 2009-05-29
+  * First release
+
+Authors
 ======
 
 Michael D. Ivey <ivey@gweezlebur.com>
+Eric Lindvall <eric@sevenscale.com>
 
-Sponsored by and developed with Seven Scale <http://sevenscale.com/>, 
-creators of Cloudvox and Open Syslog.
+Sponsored by and developed with Seven Scale <http://sevenscale.com/>,
+creators of Cloudvox and Clover (formerly Open Syslog).
 
 Copyright (c) 2009 Seven Scale LLC.  Released under the MIT License.

@@ -5,46 +5,21 @@ class StrongPasswordsTest < Test::Unit::TestCase
     @user = User.new
   end
 
-  def password_errors
-    @user.errors[:password].is_a?(Array) ? @user.errors[:password] : [@user.errors[:password]]
-  end
-
-  def assert_password_error(str)
-    assert password_errors.include?(str), "Password errors didn't include: '#{str}'"
-  end
-
   def test_no_password
-    assert @user.valid?
+    assert @user.valid?, @user.errors.full_messages.join(', ')
   end
 
-  def test_too_short
-    @user.password = "abcde"
-    assert !@user.valid?
-    assert_password_error "is too short (minimum is 12 characters)"
+  def test_failed
+    @user.password = "abcdesut"
+    assert_equal 1, @user.password_strength
+    assert !@user.valid?, @user.errors.full_messages.join(', ')
+    assert_password_error "must include at least 3 symbols, numbers, or upper-case letters"
   end
 
-  def test_symbols
-    @user.password = "abcdefghijklmopqrtsut"
-    assert !@user.valid?
-    assert_password_error "must include at least 1 symbol (#{StrongPasswords::VALID_SYMBOLS})"
-  end
-
-  def test_numbers
-    @user.password = "abcdefghijklmopqrtsut"
-    assert !@user.valid?
-    assert_password_error "must include at least 1 number"
-  end
-
-  def test_upper_case
-    @user.password = "abcdefghijklmopqrstuv"
-    assert !@user.valid?
-    assert_password_error "must include at least 1 upper-case letter"
-  end
-
-  def test_lower_case
-    @user.password = "ABCDEFGHIJKLMNOPQRSTUV"
-    assert !@user.valid?
-    assert_password_error "must include at least 1 lower-case letter"
+  def test_passed
+    @user.password = "abc123EFG"
+    assert_equal 4, @user.password_strength
+    assert @user.valid?, @user.errors.full_messages.join(', ')
   end
 
   def test_good_passwords
@@ -52,7 +27,16 @@ class StrongPasswordsTest < Test::Unit::TestCase
      "popu!@dD09lqwdqwdwqk",
      "PoPA1dqw0^nqwnd#a"].each do |pw|
       @user.password = pw
-      assert @user.valid?
+      assert @user.valid?, @user.errors.full_messages.join(', ')
     end
+  end
+
+  private
+  def password_errors
+    Array(@user.errors[:password])
+  end
+
+  def assert_password_error(str)
+    assert password_errors.include?(str), "Password errors didn't include: '#{str}'"
   end
 end
